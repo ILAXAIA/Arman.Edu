@@ -1,2 +1,0 @@
-# Arman.Edu
-Our project
