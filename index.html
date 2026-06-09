@@ -1358,7 +1358,10 @@
         ];
 
         // --- СИСТЕМА ОДНОСТРАНИЧНОЙ НАВИГАЦИИ (SPA) ---
-        window.navigateTo = function(page) {
+       window.navigateTo = function(page) {
+       // Улучшение №4: Мгновенно сбрасываем скролл наверх при ЛЮБОМ переключении страницы
+       window.scrollTo({ top: 0, behavior: 'instant' });
+
             const mainPage = document.getElementById('page-main');
             const dashboardPage = document.getElementById('page-dashboard');
             const subjectLessonsPage = document.getElementById('page-subject-lessons');
@@ -1372,10 +1375,8 @@
                 if (!currentUser) { openAuthModal(); return; }
                 dashboardPage.classList.remove('hidden');
                 syncDashboardUI();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else if (page === 'subject-lessons') {
                 subjectLessonsPage.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 // Главная
                 mainPage.classList.remove('hidden');
@@ -1848,19 +1849,23 @@
         window.saveProfileSettings = function() {
             if(!currentUser) return;
 
-            const dbPrefS1 = document.getElementById('db-pref-s1');
-            const dbPrefS2 = document.getElementById('db-pref-s2');
+            const p1 = document.getElementById('db-pref-s1').value;
+            const p2 = document.getElementById('db-pref-s2').value;
 
-            if (dbPrefS1) currentUser.subject1 = dbPrefS1.value;
-            if (dbPrefS2) currentUser.subject2 = dbPrefS2.value;
+            if (p1 === p2) {
+                alert("Профильные предметы не могут совпадать! Выберите разные дисциплины.");
+                return; // Блокируем сохранение некорректных данных
+            }
 
-            // Обновляем текущую сессию
+            currentUser.subject1 = p1;
+            currentUser.subject2 = p2;
+
             localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
-
-            // Обновляем данные пользователя в общей базе, чтобы настройки не слетали при перезаходе
             saveRegisteredUser(currentUser.email, currentUser);
-
             renderDashboardRecommendations();
+
+            // Опционально: красивое уведомление об успехе
+            alert("Настройки профиля успешно сохранены!");
         }
 
         // =========================================================
@@ -1968,12 +1973,16 @@
                 const userEnteredCode = codeInput.value.trim();
 
                 if (userEnteredCode === currentVerificationCode.toString()) {
-                    // Код верный! Сохраняем пользователя в общую базу навсегда
+                    // Код верный! Сохраняем пользователя в общую базу НАВСЕГДА (вместе с паролем)
                     saveRegisteredUser(pendingUserData.email, pendingUserData);
 
                     // Автоматически логиним его (создаем сессию)
                     currentUser = pendingUserData;
-                    localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
+
+                    // ЧИСТКА ПАРОЛЯ ИЗ СЕССИИ (Улучшение №2)
+                    const sessionUser = { ...currentUser };
+                    delete sessionUser.password;
+                    localStorage.setItem('ent_user_session', JSON.stringify(sessionUser));
 
                     loginUserUI();
                     closeAuthModal();
@@ -2017,7 +2026,11 @@
 
                 // Если почта и пароль совпали — пускаем в ЛК мгновенно!
                 currentUser = existingUser;
-                localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
+
+                // ЧИСТКА ПАРОЛЯ ИЗ СЕССИИ (Улучшение №2)
+                const sessionUser = { ...currentUser };
+                delete sessionUser.password;
+                localStorage.setItem('ent_user_session', JSON.stringify(sessionUser));
 
                 loginUserUI();
                 closeAuthModal();
@@ -2048,7 +2061,7 @@
                 pendingUserData = {
                     name: name,
                     email: email,
-                    password: password, // сохраняем пароль для последующих входов
+                    password: password, // Тут пароль оставляем, чтобы метод saveRegisteredUser сохранил его в базу данных
                     subject1: 'math',
                     subject2: 'physics'
                 };
@@ -2170,12 +2183,13 @@
             recGrid.innerHTML = htmlBuffer;
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+       document.addEventListener("DOMContentLoaded", function() {
             if (currentUser) {
                 loginUserUI();
                 syncDashboardUI();
             }
-            if (typeof renderContent === "function") renderContent();
+            // Явно передаем 'all', чтобы избежать багов с фильтрацией при первой загрузке
+            if (typeof renderContent === "function") renderContent('all');
             if (typeof renderQuiz === "function") renderQuiz();
             if (typeof renderFAQ === "function") renderFAQ();
         });
