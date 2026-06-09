@@ -1783,98 +1783,88 @@
             }
         }
 
-        // --- СИНХРОНИЗАЦИЯ ДАННЫХ И ИНТЕРФЕЙСА ЛК ---
+    // =========================================================
+        // НАСТРОЙКИ И ПЕРЕМЕННЫЕ АВТОРИЗАЦИИ
+        // =========================================================
+        let currentVerificationCode = null;
+        let pendingUserData = null; // Здесь хранятся данные во время регистрации (до ввода кода)
+        const ENT_SERVICE_ID = "service_mkx2oxl";
+        const ENT_TEMPLATE_ID = "template_u4p5edd";
+
+        // Вспомогательные функции для работы с "базой данных" зарегистрированных юзеров
+        function getRegisteredUsers() {
+            const users = localStorage.getItem('ent_registered_users');
+            return users ? JSON.parse(users) : {};
+        }
+
+        function saveRegisteredUser(email, userData) {
+            const users = getRegisteredUsers();
+            users[email.toLowerCase()] = userData;
+            localStorage.setItem('ent_registered_users', JSON.stringify(users));
+        }
+
+        // =========================================================
+        // СИНХРОНИЗАЦИЯ ДАННЫХ И ИНТЕРФЕЙСА ЛК
+        // =========================================================
         function syncDashboardUI() {
             if (!currentUser) return;
 
-            // Заполнение текстовых полей ЛК
-            document.getElementById('db-username').innerText = currentUser.name;
-            document.getElementById('db-welcome-name').innerText = currentUser.name;
-            document.getElementById('db-email').innerText = currentUser.email;
-            document.getElementById('db-avatar').innerText = currentUser.name.charAt(0);
+            const dbUsername = document.getElementById('db-username');
+            const dbWelcomeName = document.getElementById('db-welcome-name');
+            const dbEmail = document.getElementById('db-email');
+            const dbAvatar = document.getElementById('db-avatar');
+            const dbPrefS1 = document.getElementById('db-pref-s1');
+            const dbPrefS2 = document.getElementById('db-pref-s2');
 
-            // Синхронизация селекторов предметов
-            document.getElementById('db-pref-s1').value = currentUser.subject1 || 'math';
-            document.getElementById('db-pref-s2').value = currentUser.subject2 || 'physics';
+            if (dbUsername) dbUsername.innerText = currentUser.name;
+            if (dbWelcomeName) dbWelcomeName.innerText = currentUser.name;
+            if (dbEmail) dbEmail.innerText = currentUser.email;
+            if (dbAvatar && currentUser.name) dbAvatar.innerText = currentUser.name.charAt(0);
 
-            // Подсчет результатов тестов для карточки ЛК
+            if (dbPrefS1) dbPrefS1.value = currentUser.subject1 || 'math';
+            if (dbPrefS2) dbPrefS2.value = currentUser.subject2 || 'physics';
+
             const savedAnswers = JSON.parse(localStorage.getItem('ent_quiz_answers'));
             const statQuizBlock = document.getElementById('db-stat-quiz');
-            if (savedAnswers) {
-                let score = 0;
-                quizQuestions.forEach(q => { if(savedAnswers[q.id] === q.correct) score++; });
-                statQuizBlock.innerText = `${score} из ${quizQuestions.length} правильных`;
-                statQuizBlock.className = "text-xl font-bold text-emerald-600 mt-0.5";
-            } else {
-                statQuizBlock.innerText = "Не сдан";
-                statQuizBlock.className = "text-xl font-bold text-gray-400 mt-0.5";
+
+            if (statQuizBlock) {
+                if (savedAnswers && typeof quizQuestions !== 'undefined') {
+                    let score = 0;
+                    quizQuestions.forEach(q => { if(savedAnswers[q.id] === q.correct) score++; });
+                    statQuizBlock.innerText = `${score} из ${quizQuestions.length} правильных`;
+                    statQuizBlock.className = "text-xl font-bold text-emerald-600 mt-0.5";
+                } else {
+                    statQuizBlock.innerText = "Не сдан";
+                    statQuizBlock.className = "text-xl font-bold text-gray-400 mt-0.5";
+                }
             }
 
-            // Отрендерить рекомендованные курсы
             renderDashboardRecommendations();
         }
-
-        // Вывод курсов в ЛК на основе выбранных профилей
-        function renderDashboardRecommendations() {
-            const recGrid = document.getElementById('db-recommended-grid');
-            recGrid.innerHTML = '';
-
-            const s1 = currentUser.subject1 || 'math';
-            const s2 = currentUser.subject2 || 'physics';
-
-            // Фильтруем курсы, подходящие под выбранные профили
-            const filtered = entCourses.filter(c => c.subject === s1 || c.subject === s2);
-
-            if(filtered.length === 0) {
-                recGrid.innerHTML = `<div class="col-span-full text-center p-6 text-gray-400 text-xs">Выберите ваши профильные предметы слева, чтобы сформировать список лекций.</div>`;
-                return;
-            }
-
-            filtered.forEach(course => {
-                recGrid.innerHTML += `
-                    <div class="flex items-center gap-4 bg-gray-50 border border-gray-100 p-3 rounded-xl hover:bg-white transition hover:shadow-xs">
-                        <img src="${course.image}" class="w-16 h-16 object-cover rounded-lg shrink-0">
-                        <div class="min-w-0 flex-grow">
-                            <span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-1.5 py-0.5 rounded">${course.subjectName}</span>
-                            <h4 class="text-xs font-bold text-gray-800 truncate mt-1">${course.title}</h4>
-                            <p class="text-[11px] text-gray-500 truncate mt-0.5">${course.description}</p>
-                        </div>
-                        <button onclick="openModal(${course.id})" class="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition shrink-0 cursor-pointer"><i class="fa-solid fa-arrow-right text-sm"></i></button>
-                    </div>
-                `;
-            });
-        }
-
-        window.saveProfileSettings = function() {
-            if(!currentUser) return;
-            currentUser.subject1 = document.getElementById('db-pref-s1').value;
-            currentUser.subject2 = document.getElementById('db-pref-s2').value;
-            localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
-            renderDashboardRecommendations();
-        }
-
-
-        // =========================================================
-        // НАСТРОЙКИ И ПЕРЕМЕННЫЕ АВТОРИЗАЦИИ (БЕЗ ДУБЛИКАТОВ)
-        // =========================================================
-        let currentVerificationCode = null;
-        let pendingUserData = null;
-        const ENT_SERVICE_ID = "service_mkx2oxl";
-        const ENT_TEMPLATE_ID = "template_u4p5edd";
 
         // =========================================================
         // ФУНКЦИЯ СОХРАНЕНИЯ ПРОФИЛЯ
         // =========================================================
         window.saveProfileSettings = function() {
             if(!currentUser) return;
-            currentUser.subject1 = document.getElementById('db-pref-s1').value;
-            currentUser.subject2 = document.getElementById('db-pref-s2').value;
+
+            const dbPrefS1 = document.getElementById('db-pref-s1');
+            const dbPrefS2 = document.getElementById('db-pref-s2');
+
+            if (dbPrefS1) currentUser.subject1 = dbPrefS1.value;
+            if (dbPrefS2) currentUser.subject2 = dbPrefS2.value;
+
+            // Обновляем текущую сессию
             localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
+
+            // Обновляем данные пользователя в общей базе, чтобы настройки не слетали при перезаходе
+            saveRegisteredUser(currentUser.email, currentUser);
+
             renderDashboardRecommendations();
         }
 
         // =========================================================
-        // УПРАВЛЕНИЕ ОКНОМ АВТОРИЗАЦИИ (ТОТАЛЬНЫЙ СБРОС СТЕЙТА)
+        // УПРАВЛЕНИЕ ОКНОМ АВТОРИЗАЦИИ
         // =========================================================
         window.openAuthModal = function() {
             const modal = document.getElementById('auth-modal');
@@ -1886,11 +1876,10 @@
             const modalTitle = document.getElementById('auth-modal-title');
             const switchBtn = document.getElementById('auth-switch-btn');
 
-            // Полный сброс текста и ошибок
             if (authForm) authForm.reset();
             if (errorBlock) errorBlock.classList.add('hidden');
 
-            // Сброс режимов к логину
+            // По умолчанию открываем окно в режиме Входа (Login)
             if (modeInput) modeInput.value = 'login';
             if (nameField) nameField.classList.add('hidden');
             if (modalTitle) modalTitle.innerText = 'Войти в аккаунт';
@@ -1900,18 +1889,18 @@
             const nameInput = document.getElementById('auth-name');
             if (nameInput) nameInput.required = false;
 
-            // Сброс шагов видимости полей (Убираем последствия Шага 2)
+            // Сброс шагов (показываем поля ввода, скрываем ввод кода)
             const step1Block = document.getElementById('auth-fields-step1');
             const step2Block = document.getElementById('auth-fields-step2');
-            if (step1Block) step1Block.style.display = 'block'; // Используем явный display вместо классов
-            if (step1Block) step1Block.classList.remove('hidden');
+            if (step1Block) {
+                step1Block.style.display = 'block';
+                step1Block.classList.remove('hidden');
+            }
             if (step2Block) step2Block.classList.add('hidden');
 
-            // Сброс кодов безопасности в памяти
             currentVerificationCode = null;
             pendingUserData = null;
 
-            // Анимация показа модалки
             if (modal) {
                 modal.classList.remove('hidden');
                 setTimeout(() => modal.classList.remove('opacity-0'), 10);
@@ -1925,16 +1914,6 @@
             modal.classList.add('opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-
-                // Дублируем сброс полей ради безопасности
-                const step1Block = document.getElementById('auth-fields-step1');
-                const step2Block = document.getElementById('auth-fields-step2');
-                if (step1Block) {
-                    step1Block.style.display = 'block';
-                    step1Block.classList.remove('hidden');
-                }
-                if (step2Block) step2Block.classList.add('hidden');
-
                 currentVerificationCode = null;
                 pendingUserData = null;
             }, 300);
@@ -1947,6 +1926,9 @@
             const submitText = document.getElementById('auth-submit-text');
             const switchBtn = document.getElementById('auth-switch-btn');
             const nameInput = document.getElementById('auth-name');
+            const errorBlock = document.getElementById('auth-error');
+
+            if (errorBlock) errorBlock.classList.add('hidden');
 
             if (modeInput.value === 'login') {
                 modeInput.value = 'register';
@@ -1954,7 +1936,7 @@
                 if (nameInput) nameInput.required = true;
                 if (modalTitle) modalTitle.innerText = 'Регистрация';
                 if (submitText) submitText.innerText = 'Зарегистрироваться';
-                if (switchBtn) switchBtn.innerText = 'Войти';
+                if (switchBtn) switchBtn.innerText = 'Войти в аккаунт';
             } else {
                 modeInput.value = 'login';
                 if (nameField) nameField.classList.add('hidden');
@@ -1966,7 +1948,7 @@
         }
 
         // =========================================================
-        // ОБРАБОТКА ОТПРАВКИ ФОРМЫ (ОТПРАВКА И ПРОВЕРКА КОДА)
+        // ГЛАВНАЯ ЛОГИКА: ВХОД И РЕГИСТРАЦИЯ БЕЗ ЛИШНИХ КОДОВ
         // =========================================================
         window.handleAuthSubmit = function(event) {
             event.preventDefault();
@@ -1981,16 +1963,21 @@
             const step2Block = document.getElementById('auth-fields-step2');
             const codeInput = document.getElementById('auth-confirm-code');
 
-            // --- КЛИК НА ШАГЕ 2: ПРОВЕРКА ВВЕДЕННОГО КОДА ---
+            // --- ШАГ 2 РЕГИСТРАЦИИ: ПРОВЕРКА КОДА ПОДТВЕРЖДЕНИЯ ПОЧТЫ ---
             if (currentVerificationCode !== null) {
                 const userEnteredCode = codeInput.value.trim();
 
                 if (userEnteredCode === currentVerificationCode.toString()) {
+                    // Код верный! Сохраняем пользователя в общую базу навсегда
+                    saveRegisteredUser(pendingUserData.email, pendingUserData);
+
+                    // Автоматически логиним его (создаем сессию)
                     currentUser = pendingUserData;
                     localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
 
                     loginUserUI();
                     closeAuthModal();
+                    syncDashboardUI();
                     navigateTo('dashboard');
 
                     currentVerificationCode = null;
@@ -2002,56 +1989,105 @@
                 return;
             }
 
-            // --- КЛИК НА ШАГЕ 1: ВАЛИДАЦИЯ И ОТПРАВКА ПИСЬМА ---
+            // Валидация полей Шага 1
             if (!email || !password) {
                 errorBlock.innerText = "Пожалуйста, заполните все поля.";
                 errorBlock.classList.remove('hidden');
                 return;
             }
 
-            if (password.length < 8) {
-                errorBlock.innerText = "Пароль должен быть не менее 8 символов.";
-                errorBlock.classList.remove('hidden');
+            const usersDb = getRegisteredUsers();
+            const userEmailKey = email.toLowerCase();
+
+            // --- РЕЖИМ 1: ОБЫЧНЫЙ ВХОД (БЕЗ КОДА НА ПОЧТУ) ---
+            if (mode === 'login') {
+                const existingUser = usersDb[userEmailKey];
+
+                if (!existingUser) {
+                    errorBlock.innerText = "Пользователь с такой почтой не найден. Сначала зарегистрируйтесь.";
+                    errorBlock.classList.remove('hidden');
+                    return;
+                }
+
+                if (existingUser.password !== password) {
+                    errorBlock.innerText = "Неверный пароль. Попробуйте еще раз.";
+                    errorBlock.classList.remove('hidden');
+                    return;
+                }
+
+                // Если почта и пароль совпали — пускаем в ЛК мгновенно!
+                currentUser = existingUser;
+                localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
+
+                loginUserUI();
+                closeAuthModal();
+                syncDashboardUI();
+                navigateTo('dashboard');
                 return;
             }
 
-            let name = mode === 'register' ? document.getElementById('auth-name').value.trim() : email.split('@')[0];
-            pendingUserData = { name: name, email: email, subject1: 'math', subject2: 'physics' };
-
-            // Генерируем 6-значный код
-            currentVerificationCode = Math.floor(100000 + Math.random() * 900000);
-
-            submitText.innerText = "Отправка кода...";
-            errorBlock.classList.add('hidden');
-
-            const templateParams = {
-                to_email: email,
-                verification_code: currentVerificationCode
-            };
-
-            // Отправка через EmailJS
-            emailjs.send(ENT_SERVICE_ID, ENT_TEMPLATE_ID, templateParams)
-                .then(function(response) {
-                    console.log('Код успешно отправлен на:', email);
-
-                    if (step1Block) {
-                        step1Block.style.display = 'none'; // Явно скрываем первый шаг через стили
-                        step1Block.classList.add('hidden');
-                    }
-                    if (step2Block) step2Block.classList.remove('hidden');
-
-                    if (codeInput) {
-                        codeInput.required = true;
-                        codeInput.value = "";
-                    }
-                    submitText.innerText = "Подтвердить код";
-                }, function(error) {
-                    console.error('Ошибка EmailJS:', error);
-                    errorBlock.innerText = "Ошибка отправки. Проверьте настройки почты или лимиты.";
+            // --- РЕЖИМ 2: РЕГИСТРАЦИЯ (С ОТПРАВКОЙ КОДА) ---
+            if (mode === 'register') {
+                if (usersDb[userEmailKey]) {
+                    errorBlock.innerText = "Этот email уже зарегистрирован. Пожалуйста, войдите.";
                     errorBlock.classList.remove('hidden');
-                    submitText.innerText = mode === 'register' ? 'Зарегистрироваться' : 'Войти';
-                    currentVerificationCode = null;
-                });
+                    return;
+                }
+
+                if (password.length < 8) {
+                    errorBlock.innerText = "Пароль должен быть не менее 8 символов.";
+                    errorBlock.classList.remove('hidden');
+                    return;
+                }
+
+                const nameInput = document.getElementById('auth-name');
+                let name = nameInput ? nameInput.value.trim() : email.split('@')[0];
+                if(!name) name = email.split('@')[0];
+
+                // Формируем объект нового пользователя
+                pendingUserData = {
+                    name: name,
+                    email: email,
+                    password: password, // сохраняем пароль для последующих входов
+                    subject1: 'math',
+                    subject2: 'physics'
+                };
+
+                // Генерируем проверочный 6-значный код
+                currentVerificationCode = Math.floor(100000 + Math.random() * 900000);
+
+                submitText.innerText = "Отправка кода...";
+                errorBlock.classList.add('hidden');
+
+                const templateParams = {
+                    to_email: email,
+                    verification_code: currentVerificationCode
+                };
+
+                // Отправляем письмо подтверждения
+                emailjs.send(ENT_SERVICE_ID, ENT_TEMPLATE_ID, templateParams)
+                    .then(function(response) {
+                        console.log('Код подтверждения отправлен на:', email);
+
+                        if (step1Block) {
+                            step1Block.style.display = 'none';
+                            step1Block.classList.add('hidden');
+                        }
+                        if (step2Block) step2Block.classList.remove('hidden');
+
+                        if (codeInput) {
+                            codeInput.required = true;
+                            codeInput.value = "";
+                        }
+                        submitText.innerText = "Подтвердить регистрацию";
+                    }, function(error) {
+                        console.error('Ошибка EmailJS:', error);
+                        errorBlock.innerText = "Ошибка отправки кода. Проверьте лимиты EmailJS.";
+                        errorBlock.classList.remove('hidden');
+                        submitText.innerText = 'Зарегистрироваться';
+                        currentVerificationCode = null;
+                    });
+            }
         }
 
         // =========================================================
@@ -2065,9 +2101,9 @@
                 <div class="flex items-center gap-3">
                     <button onclick="navigateTo('dashboard')" class="flex items-center gap-2 bg-gray-100 hover:bg-blue-50 hover:border-blue-300 px-3 py-1.5 rounded-xl border border-gray-200 transition cursor-pointer">
                         <div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase">
-                            ${currentUser.name.charAt(0)}
+                            ${currentUser.name ? currentUser.name.charAt(0) : 'U'}
                         </div>
-                        <span class="text-sm font-semibold text-gray-700">${currentUser.name}</span>
+                        <span class="text-sm font-semibold text-gray-700">${currentUser.name || 'Пользователь'}</span>
                     </button>
                     <button onclick="logoutUser()" class="text-xs text-red-500 hover:text-red-700 font-medium underline cursor-pointer ml-1">Выйти</button>
                 </div>
@@ -2087,7 +2123,6 @@
                 `;
             }
 
-            // Очищаем форму превентивно при выходе
             const authForm = document.getElementById('auth-form');
             if (authForm) authForm.reset();
 
@@ -2102,8 +2137,12 @@
             if (!recGrid) return;
             recGrid.innerHTML = '';
 
+            if (!currentUser) return;
+
             const s1 = currentUser.subject1 || 'math';
             const s2 = currentUser.subject2 || 'physics';
+
+            if (typeof entCourses === 'undefined') return;
 
             const filtered = entCourses.filter(c => c.subject === s1 || c.subject === s2);
 
@@ -2134,10 +2173,11 @@
         document.addEventListener("DOMContentLoaded", function() {
             if (currentUser) {
                 loginUserUI();
+                syncDashboardUI();
             }
-            renderContent();
-            renderQuiz();
-            renderFAQ();
+            if (typeof renderContent === "function") renderContent();
+            if (typeof renderQuiz === "function") renderQuiz();
+            if (typeof renderFAQ === "function") renderFAQ();
         });
     </script>
 </body>
