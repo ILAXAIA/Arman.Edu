@@ -496,100 +496,111 @@
 
     <!-- СТРАНИЦА 2: ЛИЧНЫЙ КАБИНЕТ (СКРЫТА ПО УМОЛЧАНИЮ) -->
     <div id="page-dashboard" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="flex flex-col lg:flex-row gap-8">
+    <div class="flex flex-col lg:flex-row gap-8">
 
-            <!-- Боковая панель профиля -->
-            <div class="w-full lg:w-1/4 bg-white rounded-2xl border border-gray-200 p-6 shadow-xs h-fit">
-                <div class="text-center pb-6 border-b border-gray-100">
-                    <div id="db-avatar" class="w-20 h-20 rounded-full bg-blue-600 text-white text-3xl font-bold flex items-center justify-center mx-auto uppercase shadow-sm mb-3">U</div>
-                    <h3 id="db-username" class="text-xl font-bold text-gray-900">Пользователь</h3>
-                    <p id="db-email" class="text-xs text-gray-400 font-medium mt-0.5">user@mail.com</p>
-                    <span class="inline-block bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-full mt-3"><i class="fa-solid fa-shield mr-1"></i> Аккаунт активен</span>
-                </div>
+        <div class="w-full lg:w-1/4 bg-white rounded-2xl border border-gray-200 p-6 shadow-xs h-fit">
+            <div class="text-center pb-6 border-b border-gray-100">
+                <div id="db-avatar" class="w-20 h-20 rounded-full bg-blue-600 text-white text-3xl font-bold flex items-center justify-center mx-auto uppercase shadow-sm mb-3">U</div>
+                <h3 id="db-username" class="text-xl font-bold text-gray-900">Пользователь</h3>
+                <p id="db-email" class="text-xs text-gray-400 font-medium mt-0.5">user@mail.com</p>
+                <span class="inline-block bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-full mt-3"><i class="fa-solid fa-shield mr-1"></i> ID Аккаунт активен</span>
+            </div>
 
-                <!-- Настройки предметов ученика -->
-                <div class="mt-6">
-                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Мой профиль ЕНТ</h4>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 mb-1">Предмет 1</label>
-                            <select id="db-pref-s1" onchange="saveProfileSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs font-medium focus:outline-none focus:border-blue-500">
-                                <option value="math">Математика</option>
-                                <option value="physics">Физика</option>
-                                <option value="chemistry">Химия</option>
-                                <option value="biology">Биология</option>
-                                <option value="geography">География</option>
-                                <option value="world-hist">Всемирная история</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 mb-1">Предмет 2</label>
-                            <select id="db-pref-s2" onchange="saveProfileSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs font-medium focus:outline-none focus:border-blue-500">
-                                <option value="physics">Физика</option>
-                                <option value="math">Математика</option>
-                                <option value="chemistry">Химия</option>
-                                <option value="biology">Биология</option>
-                                <option value="geography">География</option>
-                                <option value="world-hist">Всемирная история</option>
-                            </select>
-                        </div>
+            <div class="mt-6">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Мой профиль ЕНТ</h4>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 mb-1">Предмет 1</label>
+                        <select id="db-pref-s1" onchange="saveProfileSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs font-medium focus:outline-none focus:border-blue-500">
+                            <option value="math">Математика</option>
+                            <option value="physics">Физика</option>
+                            <option value="chemistry">Химия</option>
+                            <option value="biology">Биология</option>
+                            <option value="geography">География</option>
+                            <option value="history-kaz">История Казахстана</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 mb-1">Предмет 2</label>
+                        <select id="db-pref-s2" onchange="saveProfileSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs font-medium focus:outline-none focus:border-blue-500">
+                            <option value="physics">Физика</option>
+                            <option value="math">Математика</option>
+                            <option value="chemistry">Химия</option>
+                            <option value="biology">Биология</option>
+                            <option value="geography">География</option>
+                            <option value="history-kaz">История Казахстана</option>
+                        </select>
                     </div>
                 </div>
+            </div>
 
-                <button onclick="logoutUser()" class="w-full mt-8 bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-600 font-medium py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Выйти из системы
+            <button onclick="logoutUser()" class="w-full mt-8 bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-600 font-medium py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Выйти из системы
+            </button>
+        </div>
+
+        <div class="w-full lg:w-3/4 space-y-6">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 md:p-8 text-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold">С возвращением, <span id="db-welcome-name">Студент</span>!</h2>
+                    <p class="text-blue-100 text-sm mt-1">До ЕНТ осталось совсем немного времени. Твой ежедневный план занятий готов.</p>
+                </div>
+                <button onclick="navigateTo('main')" class="bg-white/20 hover:bg-white text-white hover:text-blue-700 font-semibold px-4 py-2.5 rounded-xl text-sm transition backdrop-blur-xs cursor-pointer">
+                    <i class="fa-solid fa-play mr-1.5"></i>Продолжить учиться
                 </button>
             </div>
 
-            <!-- Главная панель ЛК -->
-            <div class="w-full lg:w-3/4 space-y-6">
-                <!-- Приветствие -->
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 md:p-8 text-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-square-poll-vertical"></i></div>
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-extrabold">С возвращением, <span id="db-welcome-name">Студент</span>!</h2>
-                        <p class="text-blue-100 text-sm mt-1">До ЕНТ-2026 осталось совсем немного времени. Твой ежедневный план занятий готов.</p>
-                    </div>
-                    <button onclick="navigateTo('main')" class="bg-white/20 hover:bg-white text-white hover:text-blue-700 font-semibold px-4 py-2.5 rounded-xl text-sm transition backdrop-blur-xs cursor-pointer">
-                        <i class="fa-solid fa-play mr-1.5"></i>Продолжить учиться
-                    </button>
-                </div>
-
-                <!-- Карточки статистики -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-square-poll-vertical"></i></div>
-                        <div>
-                            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Тест ЕНТ</p>
-                            <h4 id="db-stat-quiz" class="text-xl font-bold text-gray-800 mt-0.5">Не пройден</h4>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
-                        <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-regular fa-circle-play"></i></div>
-                        <div>
-                            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Лекции</p>
-                            <h4 class="text-xl font-bold text-gray-800 mt-0.5">2 / 12 уроков</h4>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
-                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-fire"></i></div>
-                        <div>
-                            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Ударный темп</p>
-                            <h4 class="text-xl font-bold text-gray-800 mt-0.5">1 дня подряд</h4>
-                        </div>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Тест ЕНТ</p>
+                        <h4 id="db-stat-quiz" class="text-xl font-bold text-gray-800 mt-0.5">Не пройден</h4>
                     </div>
                 </div>
-
-                <!-- Рекомендуемый контент на основе выбранных предметов -->
-                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-star text-amber-500"></i> Персональные рекомендации</h3>
-                    <div id="db-recommended-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Сюда JS выведет видео-лекции по выбранным в ЛК предметам -->
+                <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
+                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-regular fa-circle-play"></i></div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Лекции</p>
+                        <h4 class="text-xl font-bold text-gray-800 mt-0.5">2 / 12 уроков</h4>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-fire"></i></div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Ударный темп</p>
+                        <h4 class="text-xl font-bold text-gray-800 mt-0.5">1 дня подряд</h4>
                     </div>
                 </div>
             </div>
 
-        </div>
-    </div>
+            <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-star text-amber-500"></i> Персональные рекомендации</h3>
+                <div id="db-recommended-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-xs">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-base font-bold text-gray-900">Ваш личный трекер подготовки</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">Отмечайте изученные темы, чтобы видеть свой реальный прогресс</p>
+                    </div>
+                    <div class="shrink-0 bg-blue-50 text-blue-600 font-extrabold px-4 py-2 rounded-xl text-sm border border-blue-100 text-center">
+                        Готовность: <span id="db-checklist-percent">0%</span>
+                    </div>
+                </div>
+
+                <div class="w-full bg-gray-100 rounded-full h-3 mb-6 overflow-hidden border border-gray-200/50">
+                    <div id="db-checklist-progressbar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full w-0 transition-all duration-500 ease-out"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="db-checklist-container">
+                    </div>
+            </div>
+
+        </div> </div>
+</div>
 
     <div id="page-subject-lessons" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden">
             <div class="flex items-center justify-between mb-6">
@@ -1356,6 +1367,81 @@
             { id: 4, question: "Можно ли пересдать ЕНТ, если не набрал пороговый балл?", answer: "Да, ЕНТ проводится несколько раз в год (январь, март, май-июнь, август). Для участия в конкурсе на государственный грант учитываются результаты основного ЕНТ (май-июнь), а январские и мартовские сессии позволяют поступить на платное отделение." },
             { id: 5, question: "Что разрешено брать с собой в аудиторию тестирования?", answer: "При запуске на тестирование при себе необходимо иметь только удостоверение личности. Ручка, бумага для черновиков, калькулятор и периодическая таблица Менделеева/растворимости (в электронном виде на экране компьютера) предоставляются на месте." }
         ];
+
+        const entSubjectsTopics = {
+            'math': [
+                'Алгебраические выражения и уравнения',
+                'Функции и их графики',
+                'Тригонометрия',
+                'Прогрессии (арифметическая и геометрическая)',
+                'Производная и её применение',
+                'Интеграл и первообразная',
+                'Планиметрия (геометрия на плоскости)',
+                'Стереометрия (геометрия в пространстве)',
+                'Комбинаторика и теория вероятностей',
+                'Текстовые задачи (на движение, работу, проценты)'
+            ],
+            'physics': [
+                'Кинематика и Динамика',
+                'Законы сохранения в механике',
+                'Статика и Гидростатика',
+                'Молекулярно-кинетическая теория (МКТ)',
+                'Термодинамика',
+                'Электростатика и Постоянный ток',
+                'Магнитное поле и электромагнитная индукция',
+                'Оптика (геометрическая и волновая)',
+                'Квантовая и ядерная физика',
+                'Теория относительности (СТО)'
+            ],
+            'chemistry': [
+                'Основные понятия и законы химии',
+                'Строение атома и Периодический закон',
+                'Химическая связь и скорость реакций',
+                'Неорганическая химия (Металлы и неметаллы)',
+                'Растворы и электролитическая диссоциация',
+                'Основы органической химии',
+                'Углеводороды (Алканы, алкены, алкины)',
+                'Кислородсодержащие органические соединения',
+                'Азотсодержащие соединения (Аминокислоты, белки)',
+                'Химическое производство и экология'
+            ],
+            'biology': [
+                'Цитология (Строение и жизнь клетки)',
+                'Ботаника (Анатомия и физиология растений)',
+                'Зоология (Разнообразие животного мира)',
+                'Анатомия человека (Системы органов)',
+                'Генетика и закономерности наследования',
+                'Селекция и биотехнология',
+                'Эволюционное учение',
+                'Экология и биосфера',
+                'Обмен веществ и энергии (Метаболизм)',
+                'Размножение и индивидуальное развитие'
+            ],
+            'geography': [
+                'Физическая география (Земля как планета)',
+                'Литосфера, Гидросфера и Атмосфера',
+                'Экономическая и социальная география мира',
+                'География населения (Демография)',
+                'Геополитика и политическая карта мира',
+                'Природа и ресурсы Казахстана',
+                'Население и хозяйство Казахстана',
+                'Экономическое районирование Казахстана',
+                'Глобальные экологические проблемы',
+                'Топография и картография'
+            ],
+            'history-kaz': [
+                'Казахстан в каменном и бронзовом веках',
+                'Эпоха раннего железного века (Саксы, Гунны, Усуни)',
+                'Тюркский период (Каганаты)',
+                'Казахстан в период монгольского завоевания',
+                'Образование и укрепление Казахского ханства',
+                'Казахстан в составе Российской империи',
+                'Национально-освободительные движения',
+                'Казахстан в советский период и годы ВОВ',
+                'Освоение целины и период "Застоя"',
+                'Новейшая история: Независимый Казахстан'
+            ]
+        };
 
         // --- СИСТЕМА ОДНОСТРАНИЧНОЙ НАВИГАЦИИ (SPA) ---
        window.navigateTo = function(page) {
@@ -2142,6 +2228,122 @@
             navigateTo('main');
         }
 
+        // --- ИНИЦИАЛИЗАЦИЯ И ОТРИСОВКА ЧЕК-ЛИСТА ТЕМ (ОТПОЛИРОВАННЫЙ ВАРИАНТ) ---
+        function renderDashboardChecklist() {
+            const container = document.getElementById('db-checklist-container');
+            if (!container || !currentUser) return;
+
+            container.innerHTML = '';
+
+            const s1 = currentUser.subject1 || 'math';
+            const s2 = currentUser.subject2 || 'physics';
+
+            const savedProgress = localStorage.getItem(`ent_progress_${currentUser.email.toLowerCase()}`);
+            const checkedTopics = savedProgress ? JSON.parse(savedProgress) : [];
+
+            const activeSubjects = [s1, s2];
+
+            const subjectNamesRu = {
+                'math': 'Математика', 'physics': 'Физика', 'chemistry': 'Химия',
+                'biology': 'Биология', 'geography': 'География', 'history-kaz': 'История Казахстана'
+            };
+
+            activeSubjects.forEach(subKey => {
+                const topics = entSubjectsTopics[subKey] || [];
+                let topicsHtml = '';
+
+                topics.forEach((topicName, index) => {
+                    const topicId = `${subKey}-topic-${index}`;
+                    const isChecked = checkedTopics.includes(topicId) ? 'checked' : '';
+
+                    // ИСПРАВЛЕНИЕ: Убрали лишние min-w-0, сделали свободный и читаемый перенос строк
+                    topicsHtml += `
+                        <label class="flex items-start gap-3 p-3 bg-white border border-gray-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/20 transition cursor-pointer select-none group w-full">
+                            <input type="checkbox"
+                                   value="${topicId}"
+                                   ${isChecked}
+                                   onchange="handleTopicToggle(this)"
+                                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 shrink-0 cursor-pointer mt-0.5">
+
+                            <span class="text-xs font-semibold text-gray-700 leading-normal group-hover:text-gray-950 block">
+                                ${topicName}
+                            </span>
+                        </label>
+                    `;
+                });
+
+                // Контейнер для списка тем предмета
+                container.innerHTML += `
+                    <div class="bg-gray-50/70 border border-gray-200/60 p-5 rounded-2xl flex flex-col">
+                    <h4 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2 border-b border-gray-200/60 pb-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                        ${subjectNamesRu[subKey] || subKey}
+                    </h4>
+                    <div class="flex flex-col gap-2">
+                        ${topicsHtml || '<p class="text-xs text-gray-400 text-center py-4">Темы еще не добавлены</p>'}
+                    </div>
+                </div>
+                `;
+            });
+
+            calculateChecklistProgress();
+        }
+
+        // --- СЛУШАТЕЛЬ КЛИКА ПО ЧЕКБОКСУ ---
+        window.handleTopicToggle = function(checkbox) {
+            if (!currentUser) return;
+
+            const emailKey = currentUser.email.toLowerCase();
+            const storageKey = `ent_progress_${emailKey}`;
+
+            const savedProgress = localStorage.getItem(storageKey);
+            let checkedTopics = savedProgress ? JSON.parse(savedProgress) : [];
+
+            if (checkbox.checked) {
+                if (!checkedTopics.includes(checkbox.value)) {
+                    checkedTopics.push(checkbox.value);
+                }
+            } else {
+                checkedTopics = checkedTopics.filter(id => id !== checkbox.value);
+            }
+
+            // Сохраняем обновленный массив галочек в localStorage
+            localStorage.setItem(storageKey, JSON.stringify(checkedTopics));
+
+            // Пересчитываем проценты и обновляем полосу
+            calculateChecklistProgress();
+        };
+
+        // --- ПОДСЧЕТ ПРОЦЕНТА ГОТОВНОСТИ И АНИМАЦИЯ ПРОГРЕСС-БАРА ---
+        function calculateChecklistProgress() {
+            if (!currentUser) return;
+
+            const s1 = currentUser.subject1 || 'math';
+            const s2 = currentUser.subject2 || 'physics';
+
+            // Считаем сколько всего тем у выбранных двух предметов
+            const totalTopicsCount = (entSubjectsTopics[s1]?.length || 0) + (entSubjectsTopics[s2]?.length || 0);
+
+            if (totalTopicsCount === 0) return;
+
+            // Считаем сколько из них отмечено
+            const savedProgress = localStorage.getItem(`ent_progress_${currentUser.email.toLowerCase()}`);
+            const checkedTopics = savedProgress ? JSON.parse(savedProgress) : [];
+
+            // Фильтруем только те галочки, которые относятся к текущим выбранным двум предметам
+            const currentCheckedCount = checkedTopics.filter(id => id.startsWith(s1) || id.startsWith(s2)).length;
+
+            // Высчитываем и округляем процент
+            const percent = Math.round((currentCheckedCount / totalTopicsCount) * 100);
+
+            // Обновляем DOM элементы
+            const percentText = document.getElementById('db-checklist-percent');
+            const progressBar = document.getElementById('db-checklist-progressbar');
+
+            if (percentText) percentText.innerText = `${percent}%`;
+            if (progressBar) progressBar.style.width = `${percent}%`;
+        }
+
         // =========================================================
         // РЕКОМЕНДАЦИИ И ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ
         // =========================================================
@@ -2187,6 +2389,7 @@
             if (currentUser) {
                 loginUserUI();
                 syncDashboardUI();
+                renderDashboardChecklist();
             }
             // Явно передаем 'all', чтобы избежать багов с фильтрацией при первой загрузке
             if (typeof renderContent === "function") renderContent('all');
