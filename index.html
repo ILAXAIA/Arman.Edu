@@ -455,30 +455,12 @@
             <div class="max-w-3xl mx-auto">
                 <div class="text-center mb-10">
                     <span class="bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">Интерактивный тренажер</span>
-                    <h2 class="text-3xl font-bold text-gray-800 mt-2">Мини-тест ЕНТ</h2>
-                    <p class="text-gray-500 mt-2">Проверь свои знания прямо сейчас. За каждый правильный ответ — 1 балл.</p>
+                    <h2 class="text-3xl font-bold text-gray-800 mt-2">Онлайн-квизы по темам</h2>
+                    <p class="text-gray-500 mt-2">Выбирай интересующий тест и закрепляй пройденный материал на интерактивных платформах.</p>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
-                    <form id="quiz-form" onsubmit="handleQuizSubmit(event)">
-                        <div id="quiz-questions-container" class="space-y-8"></div>
-                        <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div id="quiz-status-text" class="text-sm text-gray-500 font-medium">Ответьте на все вопросы, чтобы узнать результат</div>
-                            <button type="submit" id="quiz-submit-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl transition shadow-sm cursor-pointer">
-                                Проверить результаты
-                            </button>
-                            <button type="button" onclick="resetQuiz()" id="quiz-reset-btn" class="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-6 py-3 rounded-xl transition hidden cursor-pointer">
-                                Пройти заново
-                            </button>
-                        </div>
-                    </form>
-
-                    <div id="quiz-result-card" class="mt-6 p-6 rounded-xl border hidden text-center">
-                        <h4 id="quiz-result-title" class="text-xl font-bold mb-1">Итоговый результат</h4>
-                        <p id="quiz-result-score" class="text-3xl font-extrabold text-blue-600 my-2">0 / 0</p>
-                        <p id="quiz-result-desc" class="text-sm text-gray-600 font-medium"></p>
+                <div class="space-y-6" id="quiz-questions-container">
                     </div>
-                </div>
             </div>
         </section>
 
@@ -554,8 +536,8 @@
                 <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
                     <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-square-poll-vertical"></i></div>
                     <div>
-                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Тест ЕНТ</p>
-                        <h4 id="db-stat-quiz" class="text-xl font-bold text-gray-800 mt-0.5">Не пройден</h4>
+                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Практика</p>
+                        <h4 id="db-stat-quiz" class="text-xl font-bold text-gray-400 mt-0.5">Квизы ЕНТ</h4>
                     </div>
                 </div>
                 <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-xs flex items-center gap-4">
@@ -1368,6 +1350,45 @@
             { id: 5, question: "Что разрешено брать с собой в аудиторию тестирования?", answer: "При запуске на тестирование при себе необходимо иметь только удостоверение личности. Ручка, бумага для черновиков, калькулятор и периодическая таблица Менделеева/растворимости (в электронном виде на экране компьютера) предоставляются на месте." }
         ];
 
+        const entQuizLinks = {
+            'math-lit': [
+                { title: "Тест: Логические задачи и комбинаторика", url: "https://forms.gle/nkYAuzCSqLd1JvM5A", questions: 15, level: "Легкий" }
+            ],
+            'read-lit': [
+                { title: "Тест: Анализ текста и контекстные вопросы", url: "https://forms.gle/DbPYUvx9XeqR1TjR8", questions: 20, level: "Средний" }
+            ],
+            'hist-kaz': [
+                { title: "Тест: Древний Казахстан и эпоха саков", url: "https://wayground.com/embed/quiz/69ac361ad370eaaae4537763", questions: 26, level: "Средний" }
+            ],
+            'math': [
+                { title: "Тест: Функции, производная и интегралы", url: "https://wayground.com/join/quiz/66fc2985285c8793e67345cd/start?studentShare=true", questions: 20, level: "Сложный" }
+            ],
+            'physics': [
+                { title: "Тест: Механика, кинематика и динамика", url: "https://wayground.com/embed/quiz/6911c4a2578639534b8f46b1", questions: 30, level: "Средний" }
+            ],
+            'informatics': [
+                { title: "Тест: Основы Python и алгоритмизация", url: "https://quizizz.com/join/quiz/6851802c23a3df59d57ec409/start?studentShare=true", questions: 40, level: "Легкий" }
+            ],
+            'chemistry': [
+                { title: "Тест: Органическая химия и углеводороды", url: "https://wayground.com/embed/quiz/68a33c7466bd1c804f02d2e4", questions: 30, level: "Сложный" }
+            ],
+            'biology': [
+                { title: "Тест: Анатомия человека и генетика", url: "https://wayground.com/embed/quiz/68d983b0c589ab67ceeede97", questions: 35, level: "Сложный" }
+            ],
+            'geography': [
+                { title: "Тест: Экономическая и политическая география", url: "https://wayground.com/join?gc=22017918&source=liveDashboard", questions: 50, level: "Сложный" }
+            ],
+            'kaz-lit': [
+                { title: "Тест: Казахская литература XIX-XX веков", url: "https://wayground.com/join?gc=53329852", questions: 25, level: "Средний" }
+            ],
+            'english': [
+                { title: "Тест: Грамматика, лексика и времена глаголов", url: "https://quizlet.com/kz/975126916/social-changes-flash-cards/?i=5goauw&x=1jqt", questions: 25, level: "Легкий" }
+            ],
+            'world-hist': [
+                { title: "Тест: История Нового времени и ХХ век", url: "https://forms.gle/V3gEkGX65Lf1uxVK9", questions: 49, level: "Сложный" }
+            ],
+        };
+
         const entSubjectsTopics = {
             'math': [
                 'Алгебраические выражения и уравнения',
@@ -1739,37 +1760,85 @@
         }
 
         // Логика теста
-        function renderQuiz() {
+        function renderQuizLinks() {
             const container = document.getElementById('quiz-questions-container');
-            container.innerHTML = '';
-            const savedAnswers = JSON.parse(localStorage.getItem('ent_quiz_answers'));
-            const isCompleted = savedAnswers !== null;
+            if (!container) return;
 
-            quizQuestions.forEach((q, qIndex) => {
-                let optionsHtml = '';
-                q.options.forEach((opt, oIndex) => {
-                    const isChecked = isCompleted && savedAnswers[q.id] === oIndex;
-                    optionsHtml += `
-                        <label class="flex items-center gap-3 p-3.5 border border-gray-200 rounded-xl hover:bg-blue-50/50 cursor-pointer transition option-label">
-                            <input type="radio" name="question-${q.id}" value="${oIndex}" ${isChecked ? 'checked' : ''} ${isCompleted ? 'disabled' : ''} required class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                            <span class="text-sm font-medium text-gray-700">${opt}</span>
-                        </label>
+            container.innerHTML = '';
+
+            // Названия предметов для красивого отображения в заголовках
+            const subjectNamesRu = {
+                'math-lit': 'Математическая грамотность',
+                'read-lit': 'Грамотность чтение',
+                'hist-kaz': 'История Казахстана',
+                'math': 'Математика',
+                'physics': 'Физика',
+                'informatics': 'Информатика',
+                'chemistry': 'Химия',
+                'biology': 'Биология',
+                'geography': 'География',
+                'kaz-lit': 'Казахсткая литература',
+                'english': 'Англиский язык',
+                'world-hist': 'Всемирная История',
+            };
+
+            let totalQuizzesHtml = '';
+
+            // Проходимся по ВСЕМ ключам (предметам), которые есть в объекте entQuizLinks
+            Object.keys(entQuizLinks).forEach(subKey => {
+                const quizzes = entQuizLinks[subKey] || [];
+
+                // Если по этому предмету вообще нет квизов, пропускаем его, чтобы не плодить пустые блоки
+                if (quizzes.length === 0) return;
+
+                let quizCardsHtml = '';
+
+                quizzes.forEach(quiz => {
+                    // Настройка цвета плашки в зависимости от сложности
+                    let levelColor = 'bg-gray-100 text-gray-600';
+                    if (quiz.level === 'Легкий') levelColor = 'bg-emerald-50 text-emerald-600 border border-emerald-100';
+                    if (quiz.level === 'Средний') levelColor = 'bg-amber-50 text-amber-600 border border-amber-100';
+                    if (quiz.level === 'Сложный') levelColor = 'bg-red-50 text-red-600 border border-red-100';
+
+                    quizCardsHtml += `
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-gray-200 p-4 rounded-xl hover:border-blue-300 hover:shadow-xs transition">
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-50 text-blue-600 p-2.5 rounded-lg shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-gamepad text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-gray-900 leading-tight">${quiz.title}</h4>
+                                    <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                                        <span class="text-[11px] text-gray-500"><i class="fa-solid fa-list-check mr-1"></i> ${quiz.questions} вопросов</span>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${levelColor}">${quiz.level}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="shrink-0 self-end sm:self-center">
+                                <a href="${quiz.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-xs cursor-pointer select-none">
+                                    Пройти тест <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
                     `;
                 });
-                container.innerHTML += `
-                    <div class="quiz-question-block border-b border-gray-100 pb-6 last:border-b-0 last:pb-0" data-qid="${q.id}">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">${q.subject}</span>
-                            <span class="text-xs text-gray-400 font-semibold">Вопрос ${qIndex + 1}</span>
-                        </div>
-                        <h3 class="text-base md:text-lg font-bold text-gray-900 mb-4">${q.question}</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            ${optionsHtml}
+
+                // Собираем блок предмета
+                totalQuizzesHtml += `
+                    <div class="bg-gray-50/70 border border-gray-200/60 p-5 rounded-2xl flex flex-col mb-5 last:mb-0">
+                        <h3 class="text-base font-bold text-gray-900 mb-4 flex items-center gap-2 border-b border-gray-200/60 pb-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                            ${subjectNamesRu[subKey] || subKey}
+                        </h3>
+                        <div class="flex flex-col gap-3">
+                            ${quizCardsHtml}
                         </div>
                     </div>
                 `;
             });
-            if (isCompleted) showQuizResults(savedAnswers);
+
+            // Если в базе вообще пусто (на всякий случай)
+            container.innerHTML = totalQuizzesHtml || '<p class="text-xs text-gray-400 text-center py-4">Доступных тестов пока нет.</p>';
         }
 
         window.handleQuizSubmit = function(event) {
@@ -1870,7 +1939,7 @@
             }
         }
 
-    // =========================================================
+        // =========================================================
         // НАСТРОЙКИ И ПЕРЕМЕННЫЕ АВТОРИЗАЦИИ
         // =========================================================
         let currentVerificationCode = null;
@@ -1911,22 +1980,17 @@
             if (dbPrefS1) dbPrefS1.value = currentUser.subject1 || 'math';
             if (dbPrefS2) dbPrefS2.value = currentUser.subject2 || 'physics';
 
-            const savedAnswers = JSON.parse(localStorage.getItem('ent_quiz_answers'));
+            // ИСПРАВЛЕНО: Вместо подсчета старых ответов просто выводим красивый статус
             const statQuizBlock = document.getElementById('db-stat-quiz');
-
             if (statQuizBlock) {
-                if (savedAnswers && typeof quizQuestions !== 'undefined') {
-                    let score = 0;
-                    quizQuestions.forEach(q => { if(savedAnswers[q.id] === q.correct) score++; });
-                    statQuizBlock.innerText = `${score} из ${quizQuestions.length} правильных`;
-                    statQuizBlock.className = "text-xl font-bold text-emerald-600 mt-0.5";
-                } else {
-                    statQuizBlock.innerText = "Не сдан";
-                    statQuizBlock.className = "text-xl font-bold text-gray-400 mt-0.5";
-                }
+                statQuizBlock.innerText = "Доступны квизы";
+                statQuizBlock.className = "text-xl font-bold text-blue-600 mt-0.5";
             }
 
             renderDashboardRecommendations();
+
+            // ИСПРАВЛЕНО: Добавляем перерисовку ссылок квизов под текущего юзера
+            if (typeof renderQuizLinks === "function") renderQuizLinks();
         }
 
         // =========================================================
@@ -1948,7 +2012,13 @@
 
             localStorage.setItem('ent_user_session', JSON.stringify(currentUser));
             saveRegisteredUser(currentUser.email, currentUser);
+
+            // Обновляем рекомендации лекций
             renderDashboardRecommendations();
+
+            // ИСПРАВЛЕНО: Обновляем чек-лист тем и ссылки квизов под новые предметы мгновенно!
+            if (typeof renderDashboardChecklist === "function") renderDashboardChecklist();
+            if (typeof renderQuizLinks === "function") renderQuizLinks();
 
             // Опционально: красивое уведомление об успехе
             alert("Настройки профиля успешно сохранены!");
@@ -2386,14 +2456,20 @@
         }
 
        document.addEventListener("DOMContentLoaded", function() {
-            if (currentUser) {
+            if (typeof currentUser !== 'undefined' && currentUser) {
                 loginUserUI();
                 syncDashboardUI();
                 renderDashboardChecklist();
             }
-            // Явно передаем 'all', чтобы избежать багов с фильтрацией при первой загрузке
+
+            // Явный и гарантированный вызов отрисовки квизов для всех (и гостей, и вошедших)
+            if (typeof renderQuizLinks === "function") {
+                renderQuizLinks();
+            } else {
+                console.error("Функция renderQuizLinks не найдена в области видимости!");
+            }
+
             if (typeof renderContent === "function") renderContent('all');
-            if (typeof renderQuiz === "function") renderQuiz();
             if (typeof renderFAQ === "function") renderFAQ();
         });
     </script>
